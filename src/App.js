@@ -1,5 +1,5 @@
-import React, { Component, Suspense } from "react";
-import { BrowserRouter, Route, NavLink } from "react-router-dom";
+import React, { Component, Fragment, Suspense } from "react";
+// import { BrowserRouter, Route, NavLink } from "react-router-dom";
 
 // import Posts from './containers/Posts';
 import User from "./containers/User";
@@ -8,26 +8,47 @@ import Welcome from "./containers/Welcome";
 const Posts = React.lazy(() => import("./containers/Posts"));
 
 class App extends Component {
+  state = {
+    showPosts: false,
+  };
+
+  showHandler = () => {
+    this.setState((prevState) => {
+      console.log(prevState);
+      return {
+        showPosts: !prevState.showPosts,
+      };
+    });
+  };
+
   render() {
     return (
-      <BrowserRouter>
-        <React.Fragment>
-          <nav>
-            <NavLink to="/user">User Page</NavLink> |&nbsp;
-            <NavLink to="/posts">Posts Page</NavLink>
-          </nav>
-          <Route path="/" component={Welcome} exact />
-          <Route path="/user" component={User} />
-          <Route
-            path="/posts"
-            render={() => (
-              <Suspense fallback={<h1>Loading...</h1>}>
-                <Posts />
-              </Suspense>
-            )}
-          />
-        </React.Fragment>
-      </BrowserRouter>
+      <Fragment>
+        <button onClick={this.showHandler}>Show posts</button>
+        {this.state.showPosts ? (
+          <Suspense fallback={<h1>Loading...</h1>}>
+            <Posts />
+          </Suspense>
+        ) : null}
+      </Fragment>
+      // <BrowserRouter>
+      //   <React.Fragment>
+      //     <nav>
+      //       <NavLink to="/user">User Page</NavLink> |&nbsp;
+      //       <NavLink to="/posts">Posts Page</NavLink>
+      //     </nav>
+      //     <Route path="/" component={Welcome} exact />
+      //     <Route path="/user" component={User} />
+      //     <Route
+      //       path="/posts"
+      //       render={() => (
+      //         <Suspense fallback={<h1>Loading...</h1>}>
+      //           <Posts />
+      //         </Suspense>
+      //       )}
+      //     />
+      //   </React.Fragment>
+      // </BrowserRouter>
     );
   }
 }
