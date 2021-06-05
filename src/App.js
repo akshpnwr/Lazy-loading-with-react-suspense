@@ -1,56 +1,24 @@
-import React, { Component, Fragment, Suspense } from "react";
-// import { BrowserRouter, Route, NavLink } from "react-router-dom";
+import React, { useState, useCallback } from "react";
+import Button from "./components/UI/Button/Button";
+import Demo from "./components/Demo";
+import "./App.css";
 
-// import Posts from './containers/Posts';
-import User from "./containers/User";
-import Welcome from "./containers/Welcome";
+function App() {
+  const [showPara, setShowPara] = useState(false);
 
-const Posts = React.lazy(() => import("./containers/Posts"));
+  console.log("APP RUNNING");
 
-class App extends Component {
-  state = {
-    showPosts: false,
-  };
+  const toggleHandler = useCallback(() => {
+    setShowPara((prevShowPara) => !prevShowPara);
+  }, []);
 
-  showHandler = () => {
-    this.setState((prevState) => {
-      console.log(prevState);
-      return {
-        showPosts: !prevState.showPosts,
-      };
-    });
-  };
-
-  render() {
-    return (
-      <Fragment>
-        <button onClick={this.showHandler}>Show posts</button>
-        {this.state.showPosts ? (
-          <Suspense fallback={<h1>Loading...</h1>}>
-            <Posts />
-          </Suspense>
-        ) : null}
-      </Fragment>
-      // <BrowserRouter>
-      //   <React.Fragment>
-      //     <nav>
-      //       <NavLink to="/user">User Page</NavLink> |&nbsp;
-      //       <NavLink to="/posts">Posts Page</NavLink>
-      //     </nav>
-      //     <Route path="/" component={Welcome} exact />
-      //     <Route path="/user" component={User} />
-      //     <Route
-      //       path="/posts"
-      //       render={() => (
-      //         <Suspense fallback={<h1>Loading...</h1>}>
-      //           <Posts />
-      //         </Suspense>
-      //       )}
-      //     />
-      //   </React.Fragment>
-      // </BrowserRouter>
-    );
-  }
+  return (
+    <div className="app">
+      <h1>Hi there!</h1>
+      <Demo show={showPara} />
+      <Button onClick={toggleHandler}>Toggle</Button>
+    </div>
+  );
 }
 
 export default App;
